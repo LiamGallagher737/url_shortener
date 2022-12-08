@@ -8,6 +8,8 @@ publish = false
 
 [dependencies]
 rocket = "0.5.0-rc.2"
-shuttle-service = { version = "0.7.2", features = ["web-rocket"] }
-shuttle-aws-rds = { version = "0.7.2", features = ["postgres"] }
-sqlx = "0.6.2"
+shuttle-service = { version = "0.7", features = ["web-rocket"] }
+shuttle-aws-rds = { version = "0.7", features = ["postgres"] }
+sqlx = "0.6"
+url = "2.3"
+nanoid = "0.4"
