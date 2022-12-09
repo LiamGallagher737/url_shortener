@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Url Shortener</title>
+</head>
+<body>
+
+    <h1 id="title">Url Shortener</h1>
+
+    <form action="submit" id="input-form" onsubmit="HandleFormSubmit(event)">
+        <input name="url" id="url-input" type="url" placeholder="https://google.com" required />
+        <button type="submit">Shorten</button>
+    </form>
+
+    <h2 id="short-url"></h2>
+
+    <style>
+
+        @import url('https://fonts.googleapis.com/css2?family=Lexend+Deca:wght@300;400;500&display=swap');
+
+        html {
+            font-family: 'Lexend Deca', sans-serif;
+            background: #0d1117;
+            color: white;
+        }
+
+        #title {
+            width: 100%;
+            text-align: center;
+            margin-top: 5rem;
+            font-size: 2.5rem;
+        }
+
+        #input-form {
+            max-width: 400px;
+            margin: auto;
+            margin-top: 10rem;
+        }
+
+        #input-form input {
+            width: calc(100% - 2rem);
+            padding: 1rem;
+            background: #282c34;
+            border: none;
+            border-radius: 1rem;
+            color: white;
+            font-size: 1.5rem;
+        }
+
+        #input-form button {
+            margin: 2rem 3rem 0 3rem;
+            width: calc(100% - 6rem);
+            padding: 0.75rem;
+            background: #4dbacc;
+            color: white;
+            border-radius: 9999px;
+            font-size: 1.2rem;
+            transition: 0.3s;
+            cursor: pointer;
+        }
+
+        #input-form button:hover {
+            background: #3e94a3;
+        }
+
+        #short-url {
+            width: 100%;
+            text-align: center;
+            margin-top: 5rem;
+            font-size: 1.5rem;
+        }
+
+    </style>
+
+    <script>
+
+        const short_url_label = document.querySelector('#short-url');
+
+        function HandleFormSubmit(event) {
+            event.preventDefault();
+
+            let url = event.target[0].value;
+            fetch("/", {
+                method: "POST",
+                headers: {
+                    'Content-Type': 'text/plain; charset=utf-8',
+                },
+                body: url,
+            }).then(result => {
+                result.text().then(short_url => {
+                    short_url_label.innerHTML = short_url;
+                });
+            });
+        }
+
+    </script>
+
+</body>
+</html>

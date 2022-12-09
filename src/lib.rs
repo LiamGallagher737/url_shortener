@@ -1,6 +1,6 @@
 #[macro_use]
 extern crate rocket;
-use rocket::{http::Status, response::Redirect, State};
+use rocket::{http::Status, response::{Redirect, content::RawHtml}, State};
 use shuttle_service::ShuttleRocket;
 use sqlx::{Executor, FromRow, PgPool};
 use url::Url;
@@ -13,7 +13,7 @@ async fn rocket(#[shuttle_aws_rds::Postgres] pool: PgPool) -> ShuttleRocket {
 
     let rocket = rocket::build()
         .manage(pool)
-        .mount("/", routes![post_url, get_url]);
+        .mount("/", routes![post_url, get_url, get_index]);
 
     Ok(rocket)
 }
@@ -42,6 +42,11 @@ async fn get_url(id: String, pool: &State<PgPool>) -> Result<Redirect, Status> {
         .map_err(|_| Status::InternalServerError)?;
 
     Ok(Redirect::permanent(url.redirect))
+}
+
+#[get("/")]
+fn get_index() -> RawHtml<&'static str> {
+    RawHtml(include_str!("../index.html"))
 }
 
 #[derive(FromRow)]
